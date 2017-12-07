@@ -6,11 +6,19 @@ Project of a Distributed Database containing articles, using Cockroachdb.
 
 == Cockroach ==
 
-Execute SQL file:
+*Execute SQL file:*
 ```cockroach sql --insecure --database=bank < ~/Documents/Tsinghua/articles.sql```
 
-MANUAL PARTITIONNING
-https://www.cockroachlabs.com/docs/stable/indexes.html#storing-columns
-https://www.cockroachlabs.com/docs/stable/column-families.html#assign-column-families-on-table-creation
+
+*Performance optimization*
+Horizontal partitionning (where clause) : Indexes
+Vertical partitionning (columns often called together) : Column Families
+Parent - child relations : Interleaved Tables
+
+== HDFS ==
+
+Pour pouvoir récupérer les infos (sans utiliser une interface graphique), utiliser WebHDFS ???
+
+
 
 
