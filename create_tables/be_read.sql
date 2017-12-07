@@ -1,18 +1,17 @@
 DROP TABLE IF EXISTS "be_read";
 
 CREATE TABLE "be_read" ( 
-   "timestamp" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
    "id" SERIAL PRIMARY KEY NOT NULL, 
+   "timestamp" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
    "aid" INT DEFAULT NULL, 
    "readNum" INT DEFAULT 0,
+   "readUidList" INT[],
    "commentNum" INT DEFAULT 0,
+   "commentUidList"  INT[],
    "agreeNum" INT DEFAULT 0,
+   "agreeUidList"  INT[],
    "shareNum" INT DEFAULT 0,
-
-   "readUidList" INT[] DEFAULT NULL,
-   "commentUidList"  INT[] DEFAULT NULL,
-   "agreeUidList"  INT[] DEFAULT NULL,
-   "shareUidList"  INT[] DEFAULT NULL
+   "shareUidList"  INT[]
 );
 
 SHOW COLUMNS from "be_read";

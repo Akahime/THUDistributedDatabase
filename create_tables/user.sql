@@ -1,13 +1,13 @@
 DROP TABLE IF EXISTS "user";
 
 CREATE TABLE "user" (
+  id SERIAL PRIMARY KEY,
   timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  uid SERIAL PRIMARY KEY,
   name STRING(50) NOT NULL UNIQUE,
-  gender BOOLEAN DEFAULT false,
+  gender BOOLEAN DEFAULT false, -- true: woman | false: man
   email STRING(80) NOT NULL UNIQUE,
   phone STRING(15) NOT NULL UNIQUE,
-  language STRING(2)  DEFAULT NULL,
+  language STRING(2) DEFAULT NULL,
   region STRING(50) DEFAULT NULL,
   dept INT DEFAULT 0,
   grade INT DEFAULT 0,
@@ -17,3 +17,4 @@ CREATE TABLE "user" (
 );
 
 SHOW COLUMNS from "user";
+
