@@ -12,7 +12,7 @@ CREATE TABLE "user" (
   dept INT DEFAULT 0,
   grade INT DEFAULT 0,
   role INT DEFAULT 0,
-  preferTags INT DEFAULT 0,
+  preferTags STRING(15) DEFAULT NULL,
   obtainedCredits INT DEFAULT 0
 );
 

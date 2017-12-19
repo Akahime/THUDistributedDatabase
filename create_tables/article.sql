@@ -9,9 +9,9 @@ CREATE TABLE "article" (
    "articleTags" STRING(15) DEFAULT NULL, 
    "authors" STRING(15) DEFAULT NULL, 
    "language" STRING(2) DEFAULT NULL, 
-   "text" STRING(50) DEFAULT NULL, 
-   "image" STRING(50) DEFAULT NULL, 
-   "video" STRING(50) DEFAULT NULL
+   "text" STRING(100) DEFAULT NULL,
+   "image" STRING(100) DEFAULT NULL,
+   "video" STRING(100) DEFAULT NULL
 );
 
 SHOW COLUMNS from article;

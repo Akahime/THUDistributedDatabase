@@ -2,12 +2,11 @@ import time
 from random import random, randrange
 
 USERS_NUM = 10000
-ARTICLES_NUM = 200000
-READS_NUM = 1000000
 
-uid_region = {}
-aid_lang = {}
-
+def random_timestamp():
+    start_timestamp = time.mktime(time.strptime('Jan 1 1980  01:33:00', '%b %d %Y %I:%M:%S'))
+    end_timestamp = time.mktime(time.strptime('Dec 20 2017  12:33:00', '%b %d %Y %I:%M:%S'))
+    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(randrange(start_timestamp,end_timestamp)))
 
 # Beijing:60%   Hong Kong:40%
 # en:20%    zh:80%
@@ -15,12 +14,6 @@ aid_lang = {}
 # 3 roles
 # 50 tags
 # 0~99 credits
-
-def random_timestamp():
-    start_timestamp = time.mktime(time.strptime('Jan 1 1980  01:33:00', '%b %d %Y %I:%M:%S'))
-    end_timestamp = time.mktime(time.strptime('Dec 20 2017  12:33:00', '%b %d %Y %I:%M:%S'))
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(randrange(start_timestamp,end_timestamp)))
-
 def gen_an_user(i):
     user = {}
     user["uid"] = str(i)
@@ -52,9 +45,21 @@ def gen_an_user(i):
             "\'" + user["preferTags"] + "\', " + \
             user["obtainedCredits"] + ")"
 
-with open("fill_user.sql", "w+") as f:
-    f.write('use test;\n')
-    f.write('INSERT INTO "user" VALUES\n')
-    for i in range(15000, 19999):
-        f.write("  " + gen_an_user(i) + ",\n")
-    f.write("  " + gen_an_user(19999) + ";")
+
+# SLOW PC : GENERATE SEVERAL INSERT FILES
+for i in range(2):
+    with open("fill_user.sql", "w+") as f:
+        f.write('use test;\n')
+        f.write('INSERT INTO "user" VALUES\n')
+        for j in range(i*5000, (i+1)*5000-1):
+            f.write("  " + gen_an_user(j) + ",\n")
+        f.write("  " + gen_an_user((i+1)*5000-1) + ";")
+
+# FAST PC : only one insert file
+
+# with open("fill_user.sql", "w+") as f:
+#     f.write('use test;\n')
+#     f.write('INSERT INTO "user" VALUES\n')
+#     for j in range(USERS_NUM-1):
+#         f.write("  " + gen_an_user(j) + ",\n")
+#     f.write("  " + gen_an_user(USERS_NUM-1) + ";")
