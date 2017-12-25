@@ -2,9 +2,10 @@ import time
 from random import random, randrange
 
 USERS_NUM = 10000
+INSERTS_NUM = 5000
 
 def random_timestamp():
-    start_timestamp = time.mktime(time.strptime('Jan 1 1980  01:33:00', '%b %d %Y %I:%M:%S'))
+    start_timestamp = time.mktime(time.strptime('Jan 1 2010  01:33:00', '%b %d %Y %I:%M:%S'))
     end_timestamp = time.mktime(time.strptime('Dec 20 2017  12:33:00', '%b %d %Y %I:%M:%S'))
     return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(randrange(start_timestamp,end_timestamp)))
 
@@ -47,13 +48,12 @@ def gen_an_user(i):
 
 
 # SLOW PC : GENERATE SEVERAL INSERT FILES
-for i in range(2):
+for i in range(USERS_NUM/INSERTS_NUM):
     with open("fill_user.sql", "w+") as f:
-        f.write('use test;\n')
         f.write('INSERT INTO "user" VALUES\n')
-        for j in range(i*5000, (i+1)*5000-1):
+        for j in range(i*INSERTS_NUM, (i+1)*INSERTS_NUM-1):
             f.write("  " + gen_an_user(j) + ",\n")
-        f.write("  " + gen_an_user((i+1)*5000-1) + ";")
+        f.write("  " + gen_an_user((i+1)*INSERTS_NUM-1) + ";")
 
 # FAST PC : only one insert file
 

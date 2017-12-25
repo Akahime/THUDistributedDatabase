@@ -7,7 +7,7 @@ Project of a Distributed Database containing articles, using Cockroachdb.
 == Cockroach ==
 
 *Execute SQL file:*
-```cockroach sql --insecure --database=test < create_tablesa/articles.sql```
+```cockroach sql --insecure --database=test < create_tables/articles.sql```
 
 *Number of Nodes*
 We filled increasingly a node. Around 50 000 entries, the select response time was around 500 ms so we chose 130 000 * 3 / 50 000 = 8 nodes.
@@ -21,7 +21,6 @@ Parent - child relations : Interleaved Tables
 == HDFS ==
 
 Pour pouvoir récupérer les infos (sans utiliser une interface graphique), utiliser WebHDFS ???
-
 
 
 

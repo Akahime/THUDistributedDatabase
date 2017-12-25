@@ -1,4 +1,5 @@
 #!/bin/bash
 for file in {"user","article","read","be_read","popular_rank"}
-	do echo -e "\n\nCreating table $file \n\n", $(cockroach sql --insecure --database=bank < ./$file.sql)
+	do echo -e "\n\nCreating table $file \n\n", $(cockroach sql --insecure --database=test < ./$file.sql)
 done
+do echo -e "\n\nIndexing tables $file \n\n", $(cockroach sql --insecure --database=test < ./$file.sql)
