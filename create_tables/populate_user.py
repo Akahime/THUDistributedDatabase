@@ -1,13 +1,6 @@
-import time
-from random import random, randrange
-
-USERS_NUM = 10000
-INSERTS_NUM = 5000
-
-def random_timestamp():
-    start_timestamp = time.mktime(time.strptime('Jan 1 2010  01:33:00', '%b %d %Y %I:%M:%S'))
-    end_timestamp = time.mktime(time.strptime('Dec 20 2017  12:33:00', '%b %d %Y %I:%M:%S'))
-    return time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(randrange(start_timestamp,end_timestamp)))
+# coding=utf-8
+import config
+from random import random
 
 # Beijing:60%   Hong Kong:40%
 # en:20%    zh:80%
@@ -18,7 +11,7 @@ def random_timestamp():
 def gen_an_user(i):
     user = {}
     user["uid"] = str(i)
-    user["timestamp"] = random_timestamp()
+    user["timestamp"] = config.random_timestamp()
     user["name"] = "user%d" %i
     user["gender"] = 'false' if random() > 0.33 else 'true'
     user["email"] = "email%d" % i
@@ -48,18 +41,19 @@ def gen_an_user(i):
 
 
 # SLOW PC : GENERATE SEVERAL INSERT FILES
-for i in range(int(USERS_NUM/INSERTS_NUM)):
+for i in range(int(config.USERS_NUM/config.INSERTS_NUM)):
     with open("temp/fill_user_"+str(i)+".sql", "w+") as f:
         f.write('INSERT INTO "user" VALUES\n')
-        for j in range(i*INSERTS_NUM, (i+1)*INSERTS_NUM-1):
+        for j in range(i*config.INSERTS_NUM, (i+1)*config.INSERTS_NUM-1):
             f.write("  " + gen_an_user(j) + ",\n")
-        f.write("  " + gen_an_user((i+1)*INSERTS_NUM-1) + ";")
+        f.write("  " + gen_an_user((i+1)*config.INSERTS_NUM-1) + ";")
+
 
 # FAST PC : only one insert file
 
 # with open("fill_user.sql", "w+") as f:
 #     f.write('use test;\n')
 #     f.write('INSERT INTO "user" VALUES\n')
-#     for j in range(USERS_NUM-1):
+#     for j in range(config.USERS_NUM-1):
 #         f.write("  " + gen_an_user(j) + ",\n")
-#     f.write("  " + gen_an_user(USERS_NUM-1) + ";")
+#     f.write("  " + gen_an_user(config.USERS_NUM-1) + ";")
