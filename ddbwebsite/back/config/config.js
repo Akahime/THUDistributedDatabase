@@ -1,11 +1,10 @@
 var config = require('./config.json');
 
-module.exports.database = {
+module.exports.dbConfig = {
     host: process.env.DB_HOST || config.database.host,
     port: process.env.DB_PORT || config.database.port,
     user: process.env.DB_USER || config.database.user,
-    password: process.env.DB_PASSWORD || config.database.password,
-    dbName: process.env.DB_NAME || config.database.dbName
+    database: process.env.DB_NAME || config.database.dbName
 };
 
 module.exports.server = {
