@@ -1,3 +1,5 @@
+# coding=utf-8
+
 import time
 from random import random, randrange
 
@@ -45,8 +47,8 @@ def gen_an_article(i):
 
 
 # SLOW PC : GENERATE SEVERAL INSERT FILES
-for i in range(ARTICLES_NUM/INSERTS_NUM):
-    with open("fill_article_"+str(i)+".sql", "w+") as f:
+for i in range(int(ARTICLES_NUM/INSERTS_NUM)):
+    with open("temp/fill_article_"+str(i)+".sql", "w+") as f:
         f.write('INSERT INTO "article" VALUES\n')
         for j in range(i*INSERTS_NUM, (i+1)*INSERTS_NUM-1):
             f.write("  " + gen_an_article(j) + ",\n")

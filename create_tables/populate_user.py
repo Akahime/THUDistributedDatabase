@@ -48,8 +48,8 @@ def gen_an_user(i):
 
 
 # SLOW PC : GENERATE SEVERAL INSERT FILES
-for i in range(USERS_NUM/INSERTS_NUM):
-    with open("fill_user.sql", "w+") as f:
+for i in range(int(USERS_NUM/INSERTS_NUM)):
+    with open("temp/fill_user_"+str(i)+".sql", "w+") as f:
         f.write('INSERT INTO "user" VALUES\n')
         for j in range(i*INSERTS_NUM, (i+1)*INSERTS_NUM-1):
             f.write("  " + gen_an_user(j) + ",\n")

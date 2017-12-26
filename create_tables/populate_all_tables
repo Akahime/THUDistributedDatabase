@@ -1,0 +1,14 @@
+#!/bin/bash
+
+for file in "user","article"
+do
+    echo -e "\n\nPopulating table $file \n\n"
+    python populate_$file.py
+
+	for file in temp/*
+    do
+        echo -e "$file"
+        cockroach sql --insecure --database=test < $file
+    done
+    rm -rf temp/*
+done
