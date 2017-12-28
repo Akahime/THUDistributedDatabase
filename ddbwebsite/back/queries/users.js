@@ -20,7 +20,7 @@ exports.getAllUsers = function (req, res, next) {
     return db.any('select * from "user"');
 };
 
-exports.insertUsers = function (req, res){
+exports.insertUsers = function (req, res){ //TODO
     var str = "";
     for(var i=0;i<10;i++) {
         str +=  gen_an_user(i) + ", "

@@ -25,7 +25,7 @@ exports.getAllArticles= function (req, res, next) {
 
 exports.insertArticles = function (req, res){
     var str = "";
-    for(var i=0;i<10;i++) {
+    for(var i=0;i<10;i++) { //TODO
         str +=  gen_an_article(i) + ", "
     }
     str +=  gen_an_article(10) + ";";

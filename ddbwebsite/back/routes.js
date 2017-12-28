@@ -6,6 +6,7 @@ var config = require('./config/config');
 var fs = require('fs');
 var users = require('./queries/users');
 var articles = require('./queries/articles');
+var reads = require('./queries/reads');
 
 
 module.exports = function(app) {
@@ -91,6 +92,37 @@ module.exports = function(app) {
             });
     });
 
+    // =========================== READS ===============================//
+
+    // Show all  ========
+    app.get('/reads/all', function(req, res) {
+        reads.getAllReads(req, res)
+            .then(function (data) {
+                res.render('reads.jade', {
+                    lang: res,
+                    result: data
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
+
+    // Insert ========
+    app.get('/reads/insert', function(req, res) {
+        reads.insertReads(req, res)
+            .then(function () {
+                res.render('index.jade', {
+                    lang: res,
+                    result: "UPDATED"
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
     // ERROR ==============================
     app.get('/error', function(req, res) {
         res.render('error.jade', {user : req.user, lang:res});
@@ -106,8 +138,8 @@ module.exports = function(app) {
 
 
     // CHANGE TO SIMPLIFIFED CHINESE   =====
-    app.get('/fr', function (req, res) {
-        res.cookie('lang', 'fr');
+    app.get('/zh', function (req, res) {
+        res.cookie('lang', 'zh');
         var backURL=req.header('Referer') || '/';
         res.redirect(backURL)
     });

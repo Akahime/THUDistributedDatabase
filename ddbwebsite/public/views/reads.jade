@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    main
+        h1 Reads
+
+        if (result.length)
+            each read in result
+                p id = #{read.id}, aid = #{read.aid}, uid = #{read.uid}, timestamp = #{read.timestamp}

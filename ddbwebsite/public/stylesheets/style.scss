@@ -1,0 +1,77 @@
+$secondary-color : #5b32bc;
+
+@mixin box-shadow($a, $b, $c, $d, $color){
+  -webkit-box-shadow: $a $b $c $d $color;
+  -moz-box-shadow: $a $b $c $d $color;
+  box-shadow: $a $b $c $d $color;
+}
+
+@mixin fill($color) {
+  svg , path {
+    fill : $color;
+  }
+}
+
+@font-face {
+  font-family: pacifico;
+  src: url(../fonts/Pacifico.ttf);
+}
+
+.fill-white{
+  @include fill(white);
+
+}
+
+.fill-secondary{
+  @include fill($secondary-color);
+}
+
+.text-cursive{
+  font-family: pacifico, Arial, sans-serif;
+  text-shadow: grey 2px 2px 1px;
+}
+
+
+body{
+  width:100%;
+  padding:0;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+img{
+  width:100%;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+a:hover{
+  text-decoration: none !important;
+  color:inherit;
+}
+
+.nav-wrapper {
+  padding: 0 15px;
+}
+
+table {
+  img {
+    width: 50px;
+  }
+}
+
+.material-placeholder{
+  margin:15px;
+  max-width:200px;
+  min-width:100px;
+  max-height:200px;
+  min-height:100px;
+  overflow:hidden;
+  &:hover{
+    overflow:initial;
+  }
+
+}

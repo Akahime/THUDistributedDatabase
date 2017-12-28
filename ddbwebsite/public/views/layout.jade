@@ -1,7 +1,59 @@
 doctype html
-html
+html(lang='en')
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title CSDesign
+    meta(charset='utf-8')
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet" href="/public/stylesheets/libs/bootstrap.min.css")
+    link(rel="stylesheet" href="/public/stylesheets/libs/bootstrap-theme.min.css")
+    link(rel="stylesheet" href="/public/stylesheets/libs/materialize.css")
+    link(rel="stylesheet" href="/public/stylesheets/style.css")
+    //link(rel="stylesheet" href="/public/stylesheets/hexagons.css")
+    link(rel="stylesheet" href="/public/fonts/font-awesome/css/font-awesome.min.css")
+    
   body
+    
+    mixin menu()
+      li
+        a(href="/popular") #{lang.__('popular')}
+      li
+        a(href="/articles/all") #{lang.__('articles')}
+      li
+        a(href="/admin") #{lang.__('admin')}
+      li.lang
+        if lang.__("lang") == "en"
+          span.active(onclick="changeLang('en')") EN
+          span   /
+          span(onclick="changeLang('zh')")   中文
+        else
+          span(onclick="changeLang('en')") EN
+          span   /
+          span.active(onclick="changeLang('fr')")   中文
+
+    nav
+      
+      .nav-wrapper
+        a.brand-logo.text-secondary.text-cursive(href="/") #{lang.__('asso_name')}
+        a.button-collapse.text-secondary(href="#" data-activates="mobile-demo")
+          i.fa.fa-bars
+        ul.right.hide-on-med-and-down
+          +menu()
+
+        ul.side-nav#mobile-demo
+          +menu()
+
+
+
     block content
+
+    footer.page-footer
+      .container
+        .row
+          span © 2017 #{lang.__('asso_name')}
+
+
+  block scripts
+    script(type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js")
+    script(type="text/javascript" src="/public/javascripts/libs/bootstrap.min.js")
+    script(type="text/javascript" src="/public/javascripts/libs/materialize.min.js")
+    script(type="text/javascript" src="/public/javascripts/ui/translation.js")
