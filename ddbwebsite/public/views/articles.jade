@@ -1,0 +1,8 @@
+extends layout
+
+block content
+    h1 Articles
+
+    if (result.length)
+        each article in result
+            p id = #{article.id}, title = #{article.title}, category = #{article.category}, timestamp = #{article.timestamp}

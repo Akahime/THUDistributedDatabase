@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var config = require('./config/config');
 var fs = require('fs');
 var users = require('./queries/users');
+var articles = require('./queries/articles');
 
 
 module.exports = function(app) {
@@ -28,7 +29,9 @@ module.exports = function(app) {
         });
     });
 
-    // USERS PAGE  ========
+    // =========================== USERS ===============================//
+
+    // Show all  ========
     app.get('/users/all', function(req, res) {
         users.getAllUsers(req, res)
             .then(function (data) {
@@ -43,9 +46,40 @@ module.exports = function(app) {
     });
 
 
-    // CREATE DB ========
+    // Insert ========
     app.get('/users/insert', function(req, res) {
         users.insertUsers(req, res)
+            .then(function () {
+                res.render('index.jade', {
+                    lang: res,
+                    result: "UPDATED"
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
+    // =========================== ARTICLES ===============================//
+
+    // Show all  ========
+    app.get('/articles/all', function(req, res) {
+        articles.getAllArticles(req, res)
+            .then(function (data) {
+                res.render('articles.jade', {
+                    lang: res,
+                    result: data
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
+
+    // Insert ========
+    app.get('/articles/insert', function(req, res) {
+        articles.insertArticles(req, res)
             .then(function () {
                 res.render('index.jade', {
                     lang: res,
