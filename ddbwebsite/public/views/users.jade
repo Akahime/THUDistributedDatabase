@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  h1 Users
+
+  if (result.length)
+    each user in result
+      p id = #{user.id}, name = #{user.name}, region = #{user.region}, timestamp = #{user.timestamp}
+

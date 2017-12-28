@@ -4,16 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('./config/config');
 var fs = require('fs');
-var constants = require('./config/constants');
-var db = require('./config/db');
-var pg = require('pg');
-
-
-var async = require('async');
-
-
-// Create a pool.
-const pool = new pg.Pool(config.dbConfig);
+var users = require('./queries/users');
 
 
 module.exports = function(app) {
@@ -29,78 +20,41 @@ module.exports = function(app) {
     //app.use('/assets', express.static(__dirname + '/../bower_components'));
     app.use('/public', express.static(__dirname + '/../public/'));
 
-    app.locals.prettyDate = prettyDate;
-    app.locals.constants = constants;
-
-
     // HOME PAGE  ========
     app.get('/', function(req, res) {
-        pool.connect(function (err, client, done) {
-
-            if (err) {
-                console.error('could not connect to cockroachdb', err);
-                done();
-            }
-
-            // SQL Query > Select Data
-            client.query('SELECT * FROM "user"', (err, results) => {
-                done();
-
-                if (err) {
-                    console.log(err.stack)
-                } else {
-                    results.rows.forEach(function (row) {
-                        console.log(row);
-                    });
-                    res.render('index.jade', {
-                        lang: res,
-                        result: results.rows
-                    });
-                }
-            })
-
+        res.render('index.jade', {
+            lang: res,
+            result: ""
         });
-
     });
 
-    // CREATE DB ========
-    app.get('/createuser', function(req, res) {
-        db.createUser(req, res)
-            .then(function(result){
-                res.render('index.jade', {
+    // USERS PAGE  ========
+    app.get('/users/all', function(req, res) {
+        users.getAllUsers(req, res)
+            .then(function (data) {
+                res.render('users.jade', {
                     lang: res,
-                    result: result
+                    result: data
                 });
             })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
     });
+
 
     // CREATE DB ========
-    app.get('/insertuser', function(req, res) {
-        db.insertUser()
-            .then(function(result){
-            res.render('index.jade', {
-                lang: res,
-                result: result
+    app.get('/users/insert', function(req, res) {
+        users.insertUsers(req, res)
+            .then(function () {
+                res.render('index.jade', {
+                    lang: res,
+                    result: "UPDATED"
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
             });
-        })
-    });
-
-
-    // CREDITS ==============================
-    app.get('/credits', function(req, res) {
-        res.render('credits', {
-            lang: res
-        });
-    });
-
-    //Render jade page  ===============
-    app.post('/render',function(req,res) {
-        if(req.body.page && req.body.property) {
-            res.render(req.body.page+'.jade', {property : req.body.property, lang: res},function(err, layout){
-                if (err) res.status(500).send(err);
-                res.send(layout);
-            });
-        }
     });
 
     // ERROR ==============================
@@ -170,11 +124,3 @@ function getLangCookie(request) {
     return lang;
 }
 
-function prettyDate(dateString){
-    //if it's already a date object and not a string you don't need this line:
-    var date = new Date(dateString);
-    var d = date.getDate();
-    var m = date.getMonth() + 1;
-    var y = date.getFullYear();
-    return date.getDate()+'/'+date.getMonth() + 1+'/'+y;
-}
