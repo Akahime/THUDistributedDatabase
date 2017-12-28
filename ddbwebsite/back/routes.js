@@ -6,6 +6,15 @@ var config = require('./config/config');
 var fs = require('fs');
 var constants = require('./config/constants');
 var db = require('./config/db');
+var pg = require('pg');
+
+
+var async = require('async');
+
+
+// Create a pool.
+const pool = new pg.Pool(config.dbConfig);
+
 
 module.exports = function(app) {
     // HTTP Request settings
@@ -26,19 +35,37 @@ module.exports = function(app) {
 
     // HOME PAGE  ========
     app.get('/', function(req, res) {
-        db.queryDb()
-            .then(function(result){
-                res.render('index.jade', {
-                    lang: res,
-                    result: result
-                });
+        pool.connect(function (err, client, done) {
+
+            if (err) {
+                console.error('could not connect to cockroachdb', err);
+                done();
+            }
+
+            // SQL Query > Select Data
+            client.query('SELECT * FROM "user"', (err, results) => {
+                done();
+
+                if (err) {
+                    console.log(err.stack)
+                } else {
+                    results.rows.forEach(function (row) {
+                        console.log(row);
+                    });
+                    res.render('index.jade', {
+                        lang: res,
+                        result: results.rows
+                    });
+                }
             })
+
+        });
 
     });
 
     // CREATE DB ========
     app.get('/createuser', function(req, res) {
-        db.createUser()
+        db.createUser(req, res)
             .then(function(result){
                 res.render('index.jade', {
                     lang: res,

@@ -4,14 +4,16 @@ var config = require('./config');
 var async = require('async');
 
 // Require the driver.
-const {extend, sql, _raw, parseUrl} = require('pg-extra');
-const pg = extend(require('pg'));
-
-
-const url = 'postgres://thuuser:@localhost:26257/thudb';
+const pg = require('pg');
 
 // Create a pool.
 const pool = new pg.Pool(config.dbConfig);
+
+// Closes communication with the database and exits.
+var finish = function (done) {
+    done();
+    process.exit();
+};
 
 exports.createUser = async function () {
     return pool.withTransaction(async (client) => {
@@ -35,20 +37,64 @@ exports.createUser = async function () {
     })
 };
 
-exports.insertUser = async function () {
-    await pool.one(sql`INSERT INTO "user" VALUES
-    (0, '2016-03-29 18:23:11', 'user0', true, 'email0', 'phone0', 'en', 'Hong Kong', 9, 4, 0, 'tags28', 80),
-        (1, '2012-08-10 21:50:07', 'user1', false, 'email1', 'phone1', 'en', 'Beijing', 15, 2, 0, 'tags48', 3),
-        (2, '2013-06-30 16:36:56', 'user2', true, 'email2', 'phone2', 'zh', 'Beijing', 16, 4, 1, 'tags45', 82),
-        (3, '2013-05-31 12:00:46', 'user3', false, 'email3', 'phone3', 'zh', 'Hong Kong', 1, 1, 0, 'tags37', 90),
-        (4, '2013-08-06 12:05:12', 'user4', false, 'email4', 'phone4', 'zh', 'Beijing', 15, 2, 1, 'tags26', 70);) `)
+exports.insertUser = async function (req, res) {
+    return pool.connect(function (err, client, done) {
+
+        if (err) {
+            console.error('could not connect to cockroachdb', err);
+            finish(done);
+        }
+        async.waterfall([
+                function (next) {
+                    // Create the "accounts" table.
+                    client.query(`INSERT INTO "user" VALUES (0, '2016-03-29 18:23:11', 'user0', true, 'email0', 'phone0', 'en', 'Hong Kong', 9, 4, 0, 'tags28', 80)`, next);
+                },
+                function (results, next) {
+                    // Insert two rows into the "accounts" table.
+                    client.query('SELECT * FROM "user"', next);
+                },
+            ],
+            function (err, results) {
+                if (err) {
+                    console.error('error inserting into user', err);
+                    finish(done);
+                }
+
+                console.log('Users');
+                results.rows.forEach(function (row) {
+                    console.log(row);
+                });
+
+                finish(done);
+            });
+    });
+
 };
 
-exports.queryDb = async function () {
-    return pool.many(sql`
-    SELECT *
-    FROM "user"
-  `.append(_raw`ORDER BY region`))
+exports.queryDb = function (req, res) {
+    const results = [];
+    pool.connect(function (err, client, done) {
+
+        if (err) {
+            console.error('could not connect to cockroachdb', err);
+            finish(done);
+        }
+
+        // SQL Query > Select Data
+        client.query('SELECT * FROM "user"', (err, results) => {
+            done();
+
+            if (err) {
+                console.log(err.stack)
+            } else {
+                results.rows.forEach(function (row) {
+                    console.log(row);
+                    return res.json(results);
+                });
+            }
+        })
+
+    });
 };
 
 /*

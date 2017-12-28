@@ -2,4 +2,8 @@ extends layout
 
 block content
   h1 My website
-  p My result is #{result}
+
+  if (result.length)
+    each user in result
+      p id = #{user.id}, name = #{user.name}, region = #{user.region}
+
