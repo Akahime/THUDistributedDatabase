@@ -5,7 +5,7 @@ CREATE TABLE "article" (
    "timestamp" TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, 
    "title" STRING(100) DEFAULT NULL,
    "category" STRING(15) DEFAULT NULL, 
-   "abstract" STRING(100) DEFAULT NULL,
+   "abstract" STRING(280) DEFAULT NULL,
    "articleTags" STRING(15) DEFAULT NULL, 
    "authors" STRING(100) DEFAULT NULL,
    "language" STRING(2) DEFAULT NULL, 

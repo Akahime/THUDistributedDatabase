@@ -46,15 +46,12 @@ img{
 
 main {
   flex: 1 0 auto;
+  padding: 0 20%;
 }
 
 a:hover{
   text-decoration: none !important;
   color:inherit;
-}
-
-.nav-wrapper {
-  padding: 0 15px;
 }
 
 table {
@@ -73,5 +70,46 @@ table {
   &:hover{
     overflow:initial;
   }
+}
 
+
+// Navbar
+
+.nav-wrapper {
+  padding: 0 15px;
+}
+
+.lang{
+  cursor: pointer;
+  span.active{
+    color: $secondary-color;
+  }
+}
+
+//END Navbar
+
+// ARTICLES
+
+.article-category{
+  padding: 60px 0 30px 0;
+}
+
+em{
+  color: grey;
+  font-size: 1.2em;
+}
+
+.card-image{
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+
+  img {
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
+  }
 }

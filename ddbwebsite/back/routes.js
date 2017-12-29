@@ -22,6 +22,9 @@ module.exports = function(app) {
     //app.use('/assets', express.static(__dirname + '/../bower_components'));
     app.use('/public', express.static(__dirname + '/../public/'));
 
+    app.locals.prettyDate = prettyDate;
+
+
     // HOME PAGE  ========
     app.get('/', function(req, res) {
         res.render('index.jade', {
@@ -63,30 +66,14 @@ module.exports = function(app) {
 
     // =========================== ARTICLES ===============================//
 
-    // Show all  ========
-    app.get('/articles/all', function(req, res) {
-        const lang = req.getLocale();
-
-        articles.getAllArticles(req, res, lang)
+    // Show articles  ========
+    app.get('/articles/:category', function(req, res) {
+        articles.getAllArticles(req, res)
             .then(function (data) {
                 res.render('articles.jade', {
                     lang: res,
-                    result: data
-                });
-            })
-            .catch(function (err) {
-                res.status(500).send(err.toString());
-            });
-    });
-
-
-    // Insert ========
-    app.get('/articles/insert', function(req, res) {
-        articles.insertArticles(req, res)
-            .then(function () {
-                res.render('index.jade', {
-                    lang: res,
-                    result: "UPDATED"
+                    result: data,
+                    category: req.params.category
                 });
             })
             .catch(function (err) {
@@ -192,3 +179,11 @@ function getLangCookie(request) {
     return lang;
 }
 
+function prettyDate(dateString){
+    //if it's already a date object and not a string you don't need this line:
+    var date = new Date(dateString);
+    var d = date.getDate();
+    var m = date.getMonth() + 1;
+    var y = date.getFullYear();
+    return date.getDate()+'/'+date.getMonth() + 1+'/'+y;
+}

@@ -4,5 +4,9 @@
   "asso_email": "leihy17@mails.tsinghua.edu.cn",
   "popular": "Popular",
   "articles": "All articles",
-  "admin": "Admin"
+  "admin": "Admin",
+  "written_by %s": "Written by %s",
+  "read_full": "READ FULL ARTICLE",
+  "science": "Science",
+  "technology": "Technology"
 }

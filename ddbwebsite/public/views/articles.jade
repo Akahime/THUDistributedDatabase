@@ -2,8 +2,45 @@ extends layout
 
 block content
     main
-        h1 Articles
+        .row.text-center.article-category
+
+
+            if category == "science"
+                .col.m6.s12
+                    a.waves-light.waves-effect.btn.disabled(href="/articles/science")
+                        i.fa.flask
+                        span  #{lang.__('science')}
+                .col.m6.s12
+                    a.waves-light.waves-effect.btn(href="/articles/technology")
+                        i.fa.fa-gears
+                        span  #{lang.__('technology')}
+            else
+                .col.m6.s12
+                    a.waves-light.waves-effect.btn(href="/articles/science")
+                        i.fa.fa-flask
+                        span  #{lang.__('science')}
+                .col.m6.s12
+                    a.waves-light.waves-effect.btn.disabled(href="/articles/technology")
+                        i.fa.fa-gears
+                        span  #{lang.__('technology')}
+
+
+
 
         if (result.length)
             each article in result
-                p id = #{article.id}, title = #{article.title}, category = #{article.category}, timestamp = #{article.timestamp}
+                .row
+                    .col.s12
+                        .card.hoverable
+                            .card-image
+                                //img(src=article.image)
+                                img(src="/public/images/tech.jpg")
+                                span.card-title=article.title
+                            .card-content
+                                em #{lang.__('written_by %s', article.authors)} - #{locals.prettyDate(article.timestamp)}
+                                span.badge.bg-secondary=article.category
+                                br
+                                p=article.abstract
+                            .card-action
+                                .chip=article.articleTags
+                                a.pull-right(href=article.text) #{lang.__('read_full')}
