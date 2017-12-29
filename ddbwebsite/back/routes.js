@@ -65,7 +65,9 @@ module.exports = function(app) {
 
     // Show all  ========
     app.get('/articles/all', function(req, res) {
-        articles.getAllArticles(req, res)
+        const lang = req.getLocale();
+
+        articles.getAllArticles(req, res, lang)
             .then(function (data) {
                 res.render('articles.jade', {
                     lang: res,

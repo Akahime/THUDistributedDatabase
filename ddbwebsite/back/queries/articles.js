@@ -19,8 +19,9 @@ var db = pgp(config.dbConfig);
 
 
 
-exports.getAllArticles= function (req, res, next) {
-    return db.any('select * from article');
+exports.getAllArticles= function (req, res, lang) {
+    console.log(lang);
+    return db.any('SELECT * FROM article WHERE language=\''+lang+'\'');
 };
 
 exports.insertArticles = function (req, res){
