@@ -5,8 +5,7 @@ exports.constants = {
     INSERTS_NUM : 5000,
 };
 
-exports.random_timestamp = function () {
-    var from = Date.parse("2010-01-01T08:00:00");
+exports.random_timestamp = function (from) {
     var to = Date.now();
     return (new Date(from + Math.random() * (to - from))).toISOString();
 };

@@ -10,14 +10,5 @@
     "port": 8888,
     "host": "localhost"
   },
-  "email" : {
-    "host": "stmp.mewlink.com",
-    "port": 465,
-    "secure": true,
-    "auth": {
-      "user": "info@mewme.com",
-      "pass": "forinfo01"
-    }
-  },
   "forceDb": false
 }

@@ -7,6 +7,7 @@ var fs = require('fs');
 var users = require('./queries/users');
 var articles = require('./queries/articles');
 var reads = require('./queries/reads');
+var be_reads = require('./queries/be_read');
 
 
 module.exports = function(app) {
@@ -66,6 +67,20 @@ module.exports = function(app) {
 
     // =========================== ARTICLES ===============================//
 
+    // Insert ========
+    app.get('/articles/insert', function(req, res) {
+        articles.insertArticles(req, res)
+            .then(function () {
+                res.render('index.jade', {
+                    lang: res,
+                    result: "UPDATED"
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
     // Show articles  ========
     app.get('/articles/:category', function(req, res) {
         articles.getAllArticles(req, res)
@@ -110,6 +125,28 @@ module.exports = function(app) {
             .catch(function (err) {
                 res.status(500).send(err.toString());
             });
+    });
+
+    // =========================== BE-READS ===============================//
+
+    // Show all  ========
+    app.get('/be-reads/all', function(req, res) {
+        be_reads.getAllBeReads(req, res)
+            .then(function (data) {
+                res.render('be-reads.jade', {
+                    lang: res,
+                    result: data
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
+
+    // Insert ========
+    app.get('/be-reads/insert', function(req, res, next) {
+        be_reads.insertBeReads(req, res, next);
     });
 
     // ERROR ==============================

@@ -40,7 +40,7 @@ block content
                                 em #{lang.__('written_by %s', article.authors)} - #{locals.prettyDate(article.timestamp)}
                                 span.badge.bg-secondary=article.category
                                 br
-                                p=article.abstract
+                                p.article-abstract=article.abstract
                             .card-action
                                 .chip=article.articleTags
                                 a.pull-right(href=article.text) #{lang.__('read_full')}

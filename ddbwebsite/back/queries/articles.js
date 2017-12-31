@@ -31,10 +31,10 @@ exports.getAllArticles= function (req, res) {
 
 exports.insertArticles = function (req, res){
     var str = "";
-    for(var i=0;i<10;i++) { //TODO
+    for(var i=0;i<1000;i++) { //TODO
         str +=  gen_an_article(i) + ", "
     }
-    str +=  gen_an_article(10) + ";";
+    str +=  gen_an_article(1000) + ";";
     console.log(str);
 
     return db.none('INSERT INTO article VALUES '+str);
@@ -48,7 +48,7 @@ function gen_an_article(i) {
     var lang = Math.random();
     var article = {};
     article["aid"] = i;
-    article["timestamp"] = utils.random_timestamp();
+    article["timestamp"] = utils.random_timestamp(Date.parse("2010-01-01T08:00:00"));
     article["title"] = lang > 0.5 ? "Title of English article number "+ i : "中文文章第"+i+"号标题";
     article["category"] = Math.random() > 0.55 ? "science" : "technology";
     article["abstract"] = lang > 0.5 ? "The purpose of this study "+i+" is to identify relationships between the database and the website. The characteristics include the tools required for making reliable partitions of the data. The findings may be useful in treating further homework at Tsinghua University." :

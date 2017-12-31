@@ -22,10 +22,10 @@ exports.getAllUsers = function (req, res, next) {
 
 exports.insertUsers = function (req, res){ //TODO
     var str = "";
-    for(var i=0;i<10;i++) {
+    for(var i=0;i<500;i++) {
         str +=  gen_an_user(i) + ", "
     }
-    str +=  gen_an_user(10) + ";";
+    str +=  gen_an_user(500) + ";";
     console.log(str);
 
     return db.none('INSERT INTO "user" VALUES '+str);
@@ -41,7 +41,7 @@ exports.insertUsers = function (req, res){ //TODO
 function gen_an_user(i) {
     var user = {};
     user["uid"] = i;
-    user["timestamp"] = utils.random_timestamp();
+    user["timestamp"] = utils.random_timestamp(Date.parse("2010-01-01T08:00:00"));
     user["name"] = "user" + i;
     user["gender"] = Math.random() > 0.33 ? 'false' : 'true';
     user["email"] = "email" + i;

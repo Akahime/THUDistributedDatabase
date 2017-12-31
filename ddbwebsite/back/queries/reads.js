@@ -25,10 +25,10 @@ exports.getAllReads= function (req, res, next) {
 
 exports.insertReads = function (req, res){
     var str = "";
-    for(var i=0;i<10;i++) { //TODO
+    for(var i=0;i<5000;i++) { //TODO
         str +=  gen_an_read(i) + ", "
     }
-    str +=  gen_an_read(10) + ";";
+    str +=  gen_an_read(5000) + ";";
     console.log(str);
 
     return db.none('INSERT INTO read VALUES '+str);
@@ -41,9 +41,9 @@ exports.insertReads = function (req, res){
 function gen_an_read(i) {
     var read = {};
     read["id"] = i;
-    read["timestamp"] = utils.random_timestamp();
-    read["uid"] = Math.floor(Math.random() * 10); //TODO : total num of users
-    read["aid"] = Math.floor(Math.random() * 10); //TODO
+    read["timestamp"] = utils.random_timestamp(Date.parse("2017-01-01T08:00:00"));
+    read["uid"] = Math.floor(Math.random() * 500); //TODO : total num of users
+    read["aid"] = Math.floor(Math.random() * 1000); //TODO : total num of articles
     read["readOrNot"] = "true";
     read["readTimeLength"] = Math.floor(Math.random() * 60) + "m" + Math.floor(Math.random() * 60) + "s";
     read["readSequence"] = Math.floor(Math.random() * 4);
