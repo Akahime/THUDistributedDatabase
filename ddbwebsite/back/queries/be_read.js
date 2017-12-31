@@ -58,27 +58,29 @@ exports.insertBeReads = function (req, res, next){
 
                                         db.any("SELECT uid FROM read WHERE \"readOrNot\" IS TRUE AND aid = " + row['aid'] + " GROUP BY uid;")
                                             .then(function (data1) {
-                                                const list1 = list_from_data(data1);
+                                                const list1 = utils.list_from_data(data1, 'uid');
 
                                                 db.any("SELECT uid FROM read WHERE \"readOrNot\" IS TRUE AND aid = " + row['aid'] + " GROUP BY uid;")
                                                     .then(function (data2) {
-                                                        const list2 = list_from_data(data2);
+                                                        const list2 = utils.list_from_data(data2, 'uid');
 
                                                         db.any("SELECT uid FROM read WHERE \"commentOrNot\" IS TRUE AND aid = " + row['aid'] + " GROUP BY uid;")
                                                             .then(function (data3) {
-                                                                const list3 = list_from_data(data3);
+                                                                const list3 = utils.list_from_data(data3, 'uid');
 
 
                                                                 db.any("SELECT uid FROM read WHERE \"shareOrNot\" IS TRUE AND aid = " + row['aid'] + ";")
                                                                     .then(function (data4) {
-                                                                        const list4 = list_from_data(data4);
+                                                                        const list4 = utils.list_from_data(data4, 'uid');
 
                                                                         db.none("INSERT INTO be_read"+be_read_columns+" VALUES (CURRENT_TIMESTAMP(),"+ row['aid']+", "+row['readnum']+","+ numdaily+","+ numweekly+","+ nummonthly + ",ARRAY[" + list1 + "]," + row['readnum']
                                                                             + ",ARRAY[" + list2 + "]," + row['commentnum'] + ",ARRAY[" + list3 + "],"+ row['sharenum'] + ",ARRAY[" + list4 + "]);")
                                                                          .then(function () {
                                                                              console.log("SUCCESS for row ("+row['aid']+", "+row['readnum']+","+ numdaily+","+ numweekly+","+ nummonthly + ",ARRAY[" + list1 + "]," + row['readnum']
                                                                          + ",ARRAY[" + list2 + "]," + row['commentnum'] + ",ARRAY[" + list3 + "],"+ row['sharenum'] + ",ARRAY[" + list4 + "])");
-                                                                             console.log(row);
+                                                                             res.status(200).json({
+                                                                                 success: "success !"
+                                                                             })
                                                                          })
                                                                          .catch(function (err) {
                                                                          return next(err);
@@ -121,18 +123,3 @@ exports.insertBeReads = function (req, res, next){
             return next(err);
         });
 };
-
-
-function list_from_data(data) {
-    var liste = "";
-    var i = 0;
-    data.forEach(function(row){
-        liste = liste + row['uid'];
-        i += 1;
-        if (i < data.length) {
-            liste = liste + ", "
-        }
-    });
-    return liste
-}
-

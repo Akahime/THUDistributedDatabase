@@ -8,6 +8,7 @@ var users = require('./queries/users');
 var articles = require('./queries/articles');
 var reads = require('./queries/reads');
 var be_reads = require('./queries/be_read');
+var popular_rank = require('./queries/popular_rank');
 
 
 module.exports = function(app) {
@@ -26,13 +27,28 @@ module.exports = function(app) {
     app.locals.prettyDate = prettyDate;
 
 
-    // HOME PAGE  ========
+    // =========================== POPULAR-RANK ===============================//
+
+    // Show all  ========
     app.get('/', function(req, res) {
-        res.render('index.jade', {
-            lang: res,
-            result: ""
-        });
+        popular_rank.getAllPopular(req, res)
+            .then(function (data) {
+                res.render('index.jade', {
+                    lang: res,
+                    result: data
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
     });
+
+
+    // Insert ========
+    app.get('/popular-rank/insert', function(req, res, next) {
+        popular_rank.insertPopular(req, res, next);
+    });
+
 
     // =========================== USERS ===============================//
 
@@ -55,10 +71,7 @@ module.exports = function(app) {
     app.get('/users/insert', function(req, res) {
         users.insertUsers(req, res)
             .then(function () {
-                res.render('index.jade', {
-                    lang: res,
-                    result: "UPDATED"
-                });
+                res.redirect('/users/all');
             })
             .catch(function (err) {
                 res.status(500).send(err.toString());
@@ -71,10 +84,7 @@ module.exports = function(app) {
     app.get('/articles/insert', function(req, res) {
         articles.insertArticles(req, res)
             .then(function () {
-                res.render('index.jade', {
-                    lang: res,
-                    result: "UPDATED"
-                });
+                res.redirect('/articles/science');
             })
             .catch(function (err) {
                 res.status(500).send(err.toString());
@@ -117,10 +127,7 @@ module.exports = function(app) {
     app.get('/reads/insert', function(req, res) {
         reads.insertReads(req, res)
             .then(function () {
-                res.render('index.jade', {
-                    lang: res,
-                    result: "UPDATED"
-                });
+                res.redirect('/reads/all');
             })
             .catch(function (err) {
                 res.status(500).send(err.toString());
@@ -148,6 +155,7 @@ module.exports = function(app) {
     app.get('/be-reads/insert', function(req, res, next) {
         be_reads.insertBeReads(req, res, next);
     });
+
 
     // ERROR ==============================
     app.get('/error', function(req, res) {

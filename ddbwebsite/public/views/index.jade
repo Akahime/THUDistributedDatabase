@@ -3,8 +3,11 @@ extends layout
 block content
 
   main
-    h1 My website
+    h1 Popular
 
     if (result.length)
-      p result
-
+      each res in result
+        h3=res.temporalgranularity
+          if(res.articleaidlist)
+            each article in res.articleaidlist
+              include part_article
