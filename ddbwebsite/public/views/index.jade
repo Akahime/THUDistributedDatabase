@@ -3,11 +3,36 @@ extends layout
 block content
 
   main
-    h1 Popular
+    h1.text-center.text-cursive.text-secondary Most popular articles
 
-    if (result.length)
-      each res in result
-        h3=res.temporalgranularity
-          if(res.articleaidlist)
-            each article in res.articleaidlist
-              include part_article
+    .row.text-center
+      if result.granularity == "Daily"
+        .col.m4.s12
+          a.waves-light.waves-effect.btn.disabled(href="/daily") Daily
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/weekly") Weekly
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/monthly") Monthly
+      else if result.granularity == "Weekly"
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/daily") Daily
+        .col.m4.s12
+          a.waves-light.waves-effect.btn.disabled(href="/weekly") Weekly
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/monthly") Monthly
+      else
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/daily") Daily
+        .col.m4.s12
+          a.waves-light.waves-effect.btn(href="/weekly") Weekly
+        .col.m4.s12
+          a.waves-light.waves-effect.btn.disabled(href="/monthly") Monthly
+
+    .col.s12
+      if(result.articles)
+        each article in result.articles
+          include part_article
+
+
+
+

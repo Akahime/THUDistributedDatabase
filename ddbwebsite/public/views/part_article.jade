@@ -2,8 +2,7 @@
     .col.s12
         .card.hoverable
             .card-image
-                //img(src=article.image)
-                img(src="/public/images/tech.jpg")
+                img(src=article.image)
                 span.card-title=article.title
             .card-content
                 em #{lang.__('written_by %s', article.authors)} - #{locals.prettyDate(article.timestamp)}

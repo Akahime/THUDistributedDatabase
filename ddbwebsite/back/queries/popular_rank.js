@@ -19,8 +19,19 @@ var db = pgp(config.dbConfig);
 
 
 
-exports.getAllPopular = function (req, res) {
-    return db.any('select * from popular_rank');
+exports.getPopularDaily = function (req, res) {
+    return db.any('SELECT * FROM article ' +
+        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Daily\')');
+};
+
+exports.getPopularMonthly = function (req, res) {
+    return db.any('SELECT * FROM article ' +
+        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Monthly\')');
+};
+
+exports.getPopularWeekly = function (req, res) {
+    return db.any('SELECT * FROM article ' +
+        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Weekly\')');
 };
 
 exports.insertPopular = function (req, res, next){

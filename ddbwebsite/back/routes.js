@@ -31,11 +31,13 @@ module.exports = function(app) {
 
     // Show all  ========
     app.get('/', function(req, res) {
-        popular_rank.getAllPopular(req, res)
+        var popular = {};
+        popular_rank.getPopularDaily(req, res)
             .then(function (data) {
+                popular.daily = data;
                 res.render('index.jade', {
                     lang: res,
-                    result: data
+                    result: {granularity: "Daily", articles: data}
                 });
             })
             .catch(function (err) {
@@ -43,6 +45,39 @@ module.exports = function(app) {
             });
     });
 
+    app.get('/daily', function(req, res) {
+        res.redirect('/');
+    });
+
+    app.get('/weekly', function(req, res) {
+        var popular = {};
+        popular_rank.getPopularWeekly(req, res)
+            .then(function (data) {
+                popular.daily = data;
+                res.render('index.jade', {
+                    lang: res,
+                    result: {granularity: "Weekly", articles: data}
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
+
+    app.get('/monthly', function(req, res) {
+        var popular = {};
+        popular_rank.getPopularMonthly(req, res)
+            .then(function (data) {
+                popular.daily = data;
+                res.render('index.jade', {
+                    lang: res,
+                    result: {granularity: "Monthly", articles: data}
+                });
+            })
+            .catch(function (err) {
+                res.status(500).send(err.toString());
+            });
+    });
 
     // Insert ========
     app.get('/popular-rank/insert', function(req, res, next) {
