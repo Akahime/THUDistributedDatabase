@@ -17,18 +17,28 @@ var db = pgp(config.dbConfig);
 
 
 exports.getAllUsers = function (req, res, next) {
-    return db.any('select * from "user"');
+    return db.any('select * from "user" ORDER BY id DESC LIMIT 50');
 };
 
-exports.insertUsers = function (req, res){ //TODO
+exports.insertUsers = function (req, res){
     var str = "";
-    for(var i=0;i<500;i++) {
+    const start = req.body.startid;
+    const end = parseInt(req.body.startid)+parseInt(req.body.number);
+
+    for(var i=start;i<end;i++) {
         str +=  gen_an_user(i) + ", "
     }
-    str +=  gen_an_user(500) + ";";
+    str +=  gen_an_user(i) + ";";
     console.log(str);
 
-    return db.none('INSERT INTO "user" VALUES '+str);
+    db.none('INSERT INTO "user" VALUES '+str)
+        .then(function () {
+            req.flash('message', "Success inserting "+req.body.number+" users starting from id "+start);
+            res.redirect("/bulk-load");
+        })
+        .catch(function (err) {
+            res.status(500).send(err.toString());
+        });
 };
 
 

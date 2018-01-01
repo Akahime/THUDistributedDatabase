@@ -2,11 +2,15 @@
 	"lang": "zh",
 	"asso_name": "THU Databases",
 	"asso_email": "leihy17@mails.tsinghua.edu.cn",
-	"popular": "流行",
+	"popular": "流行文章",
 	"articles": "所有文章",
-	"admin": "管理员",
+	"users": "用户",
 	"written_by %s": "%s 写的",
 	"read_full": "看完整的文章",
     "science": "科学",
-    "technology": "技术"
+    "technology": "技术",
+	"popular_h1": "最流行的文章",
+	"daily": "每日的",
+	"weekly": "每周的",
+	"monthly": "每月的"
 }

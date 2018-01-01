@@ -88,7 +88,7 @@ module.exports = function(app) {
     // =========================== USERS ===============================//
 
     // Show all  ========
-    app.get('/users/all', function(req, res) {
+    app.get('/users', function(req, res) {
         users.getAllUsers(req, res)
             .then(function (data) {
                 res.render('users.jade', {
@@ -103,28 +103,11 @@ module.exports = function(app) {
 
 
     // Insert ========
-    app.get('/users/insert', function(req, res) {
-        users.insertUsers(req, res)
-            .then(function () {
-                res.redirect('/users/all');
-            })
-            .catch(function (err) {
-                res.status(500).send(err.toString());
-            });
+    app.post('/users/insert', function(req, res) {
+        users.insertUsers(req, res);
     });
 
     // =========================== ARTICLES ===============================//
-
-    // Insert ========
-    app.get('/articles/insert', function(req, res) {
-        articles.insertArticles(req, res)
-            .then(function () {
-                res.redirect('/articles/science');
-            })
-            .catch(function (err) {
-                res.status(500).send(err.toString());
-            });
-    });
 
     // Show articles  ========
     app.get('/articles/:category', function(req, res) {
@@ -139,6 +122,11 @@ module.exports = function(app) {
             .catch(function (err) {
                 res.status(500).send(err.toString());
             });
+    });
+
+    // Insert ========
+    app.post('/articles/insert', function(req, res) {
+        articles.insertArticles(req, res);
     });
 
     // =========================== READS ===============================//
@@ -159,14 +147,8 @@ module.exports = function(app) {
 
 
     // Insert ========
-    app.get('/reads/insert', function(req, res) {
-        reads.insertReads(req, res)
-            .then(function () {
-                res.redirect('/reads/all');
-            })
-            .catch(function (err) {
-                res.status(500).send(err.toString());
-            });
+    app.post('/reads/insert', function(req, res) {
+        reads.insertReads(req, res);
     });
 
     // =========================== BE-READS ===============================//
@@ -189,6 +171,14 @@ module.exports = function(app) {
     // Insert ========
     app.get('/be-reads/insert', function(req, res, next) {
         be_reads.insertBeReads(req, res, next);
+    });
+
+    //======= BULK LOAD =====
+    app.get('/bulk-load', function(req, res) {
+        res.render('bulk-load.jade', {
+            message: req.flash('message'),
+            lang: res
+        });
     });
 
 
@@ -223,6 +213,16 @@ module.exports = function(app) {
                 res.json(json);
             }
         });
+    });
+
+    //Render jade page  ===============
+    app.post('/render',function(req,res) {
+        if(req.body.page && req.body.article) {
+            res.render(req.body.page+'.jade', {article : req.body.article, lang: res},function(err, layout){
+                if (err) res.status(500).send(err);
+                res.send(layout);
+            });
+        }
     });
 
     //The 404 Route (ALWAYS Keep this as the last route)
@@ -263,7 +263,7 @@ function prettyDate(dateString){
     //if it's already a date object and not a string you don't need this line:
     var date = new Date(dateString);
     var d = date.getDate();
-    var m = date.getMonth() + 1;
+    var m = parseInt(date.getMonth() + 1);
     var y = date.getFullYear();
-    return date.getDate()+'/'+date.getMonth() + 1+'/'+y;
+    return d+'/'+ m +'/'+y;
 }

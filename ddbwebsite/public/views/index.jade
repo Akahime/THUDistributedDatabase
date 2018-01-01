@@ -3,30 +3,30 @@ extends layout
 block content
 
   main
-    h1.text-center.text-cursive.text-secondary Most popular articles
+    h1.text-center.text-cursive.text-secondary=lang.__('popular_h1')
 
     .row.text-center
       if result.granularity == "Daily"
         .col.m4.s12
-          a.waves-light.waves-effect.btn.disabled(href="/daily") Daily
+          a.waves-light.waves-effect.btn.disabled(href="/daily")=lang.__('daily')
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/weekly") Weekly
+          a.waves-light.waves-effect.btn(href="/weekly")=lang.__('weekly')
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/monthly") Monthly
+          a.waves-light.waves-effect.btn(href="/monthly")=lang.__('monthly')
       else if result.granularity == "Weekly"
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/daily") Daily
+          a.waves-light.waves-effect.btn(href="/daily")=lang.__('daily')
         .col.m4.s12
-          a.waves-light.waves-effect.btn.disabled(href="/weekly") Weekly
+          a.waves-light.waves-effect.btn.disabled(href="/weekly")=lang.__('weekly')
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/monthly") Monthly
+          a.waves-light.waves-effect.btn(href="/monthly")=lang.__('monthly')
       else
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/daily") Daily
+          a.waves-light.waves-effect.btn(href="/daily")=lang.__('daily')
         .col.m4.s12
-          a.waves-light.waves-effect.btn(href="/weekly") Weekly
+          a.waves-light.waves-effect.btn(href="/weekly")=lang.__('weekly')
         .col.m4.s12
-          a.waves-light.waves-effect.btn.disabled(href="/monthly") Monthly
+          a.waves-light.waves-effect.btn.disabled(href="/monthly")=lang.__('monthly')
 
     .col.s12
       if(result.articles)

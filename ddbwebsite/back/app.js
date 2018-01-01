@@ -10,6 +10,9 @@ var fs = require('fs');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var i18n = require('./config/i18n');
+var session      = require('express-session');
+var flash    = require('connect-flash');
+
 
 // Logger setup
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
@@ -22,6 +25,13 @@ app.use(cookieParser());
 
 //Enable multi-language support
 app.use(i18n);
+
+app.use(session({
+    secret: 'CSBest4Design!',
+    saveUninitialized: true,
+    resave: true
+})); // session secret
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 require('./routes')(app);
 

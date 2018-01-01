@@ -1,0 +1,65 @@
+extends layout
+
+block content
+
+    main
+        h1.text-center.text-cursive.text-secondary Bulk load
+
+        if message
+            .flash-message.visible-xs=message
+
+        .row.col.s12
+            .card-panel
+                h3.text-cursive=lang.__("users")
+                .row
+                    form.col.s12(action="/users/insert" method="post")
+                        .row
+                            .input-field.col.s6
+                                input(type="number" name="startid")
+                                label Start id
+                            .input-field.col.s6
+                                input(type="number" name="number")
+                                label Num entries
+                            input.btn(type="submit" value="Submit")
+
+        .row.col.s12
+            .card-panel
+                h3.text-cursive Articles
+                .row
+                    form.col.s12(action="/articles/insert" method="post")
+                        .row
+                            .input-field.col.s6
+                                input(type="number" name="startid")
+                                label Start id
+                            .input-field.col.s6
+                                input(type="number" name="number")
+                                label Num entries
+                            input.btn(type="submit" value="Submit")
+
+        .row.col.s12
+            .card-panel
+                h3.text-cursive Reads
+                .row
+                    form.col.s12(action="/reads/insert" method="post")
+                        .row
+                            .input-field.col.s6
+                                input(type="number" name="startid")
+                                label Start id
+                            .input-field.col.s6
+                                input(type="number" name="number")
+                                label Num entries
+                        .row
+                            .input-field.col.s6
+                                input(type="number" name="startuid")
+                                label Users from id
+                            .input-field.col.s6
+                                input(type="number" name="enduid")
+                                label Users to id
+                        .row
+                            .input-field.col.s6
+                                input(type="number" name="startaid")
+                                label Articles from id
+                            .input-field.col.s6
+                                input(type="number" name="endaid")
+                                label Articles to id
+                        input.btn(type="submit" value="Submit")

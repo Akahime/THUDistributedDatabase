@@ -2,11 +2,15 @@
   "lang": "en",
   "asso_name": "THU Databases",
   "asso_email": "leihy17@mails.tsinghua.edu.cn",
-  "popular": "Popular",
+  "popular": "Popular articles",
   "articles": "All articles",
-  "admin": "Admin",
+  "users": "Users",
   "written_by %s": "Written by %s",
   "read_full": "READ FULL ARTICLE",
   "science": "Science",
-  "technology": "Technology"
+  "technology": "Technology",
+  "popular_h1": "Most popular articles",
+  "daily": "Daily",
+  "weekly": "Weekly",
+  "monthly": "Monthly"
 }

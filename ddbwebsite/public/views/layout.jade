@@ -18,7 +18,9 @@ html(lang='en')
       li
         a(href="/articles/science") #{lang.__('articles')}
       li
-        a(href="/admin") #{lang.__('admin')}
+        a(href="/users") #{lang.__('users')}
+      li
+        a(href="/bulk-load") Bulk Load
       li.lang
         if lang.__("lang") == "en"
           span.active(onclick="changeLang('en')") EN

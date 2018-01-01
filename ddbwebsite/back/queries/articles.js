@@ -21,23 +21,39 @@ var db = pgp(config.dbConfig);
 
 exports.getAllArticles= function (req, res) {
     const category = req.params.category;
+    var order = "timestamp";
+    if(req.query.sort && req.query.sort == 'id') {
+        console.log(req.query.sort);
+        order = "id";
+    }
+
     if (category !== "science" && category !== "technology") {
-        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' ORDER BY timestamp DESC');
+        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' ORDER BY '+order+' DESC LIMIT 50');
     }
     else {
-        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' AND category=\''+category+'\' ORDER BY timestamp DESC');
+        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' AND category=\''+category+'\' ORDER BY '+order+' DESC LIMIT 50');
     }
 };
 
 exports.insertArticles = function (req, res){
     var str = "";
-    for(var i=0;i<1000;i++) { //TODO
+    const start = req.body.startid;
+    const end = parseInt(req.body.startid)+parseInt(req.body.number);
+
+    for(var i=start;i<end;i++) {
         str +=  gen_an_article(i) + ", "
     }
-    str +=  gen_an_article(1000) + ";";
+    str +=  gen_an_article(end) + ";";
     console.log(str);
 
-    return db.none('INSERT INTO article VALUES '+str);
+    db.none('INSERT INTO article VALUES '+str)
+        .then(function () {
+            req.flash('message', "Success inserting "+req.body.number+" articles starting from id "+start);
+            res.redirect("/bulk-load");
+        })
+        .catch(function (err) {
+            res.status(500).send(err.toString());
+        });
 };
 
 /**# science:45%   technology:55%

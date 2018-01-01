@@ -2,9 +2,25 @@ extends layout
 
 block content
   main
-    h1 Users
+    h1.text-cursive.text-secondary.text-center Users
 
-    if (result.length)
-      each user in result
-        p id = #{user.id}, name = #{user.name}, region = #{user.region}, timestamp = #{user.timestamp}
-
+    ul.collection#users
+      if (result.length)
+        each user in result
+          li.collection-item.avatar
+            if user.region == "Beijing"
+              img(src="/public/images/beijing.jpg" alt="Beijing").circle
+            else
+              img(src="/public/images/hongkong.png" alt="Hong Kong").circle
+            span.title #{user.name} &nbsp;
+              if user.gender
+                i.fa.fa-venus
+              else
+                i.fa.fa-mars
+            span.chip.pull-right=user.prefertags
+            p
+              i.fa.fa-envelope-o
+              span  #{user.email} &nbsp;
+              i.fa.fa-phone
+              span   #{user.phone}
+            p Dept : #{user.dept}, Grade :  #{user.grade}, Role : #{user.role}, Credits : #{user.obtainedcredits}

@@ -25,25 +25,40 @@ exports.getAllReads= function (req, res, next) {
 
 exports.insertReads = function (req, res){
     var str = "";
-    for(var i=0;i<5000;i++) { //TODO
-        str +=  gen_an_read(i) + ", "
+    const start = req.body.startid;
+    const end = parseInt(req.body.startid)+parseInt(req.body.number);
+
+    const startuid = parseInt(req.body.startuid);
+    const enduid = parseInt(req.body.enduid);
+    const startaid = parseInt(req.body.startaid);
+    const endaid = parseInt(req.body.endaid);
+
+    for(var i=start;i<end;i++) {
+        str +=  gen_an_read(i, startuid, enduid, startaid, endaid) + ", "
     }
-    str +=  gen_an_read(5000) + ";";
+    str +=  gen_an_read(end, startuid, enduid, startaid, endaid) + ";";
     console.log(str);
 
-    return db.none('INSERT INTO read VALUES '+str);
+    db.none('INSERT INTO read VALUES '+str)
+        .then(function () {
+            req.flash('message', "Success inserting "+req.body.number+" reads starting from id "+start);
+            res.redirect("/bulk-load");
+        })
+        .catch(function (err) {
+            res.status(500).send(err.toString());
+        });
 };
 
 /**
  * # user agree/comment/share an read with the probability 0.3/0.3/0.2 
  * **/
 
-function gen_an_read(i) {
+function gen_an_read(i, startuid, enduid, startaid, endaid) {
     var read = {};
     read["id"] = i;
     read["timestamp"] = utils.random_timestamp(Date.parse("2017-01-01T08:00:00"));
-    read["uid"] = Math.floor(Math.random() * 500); //TODO : total num of users
-    read["aid"] = Math.floor(Math.random() * 1000); //TODO : total num of articles
+    read["uid"] = startuid+Math.floor(Math.random() * (enduid-startuid)); //TODO : total num of users
+    read["aid"] = startaid+Math.floor(Math.random() * (endaid-startaid)); //TODO : total num of articles
     read["readOrNot"] = "true";
     read["readTimeLength"] = Math.floor(Math.random() * 60) + "m" + Math.floor(Math.random() * 60) + "s";
     read["readSequence"] = Math.floor(Math.random() * 4);
