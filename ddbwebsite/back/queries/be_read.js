@@ -24,6 +24,7 @@ exports.getAllBeReads= function (req, res, next) {
 };
 
 exports.insertBeReads = function (req, res, next){
+	console.log("start be reads");
 
     db.any("SELECT aid, COUNT(aid), SUM(CASE WHEN \"readOrNot\" is true THEN 1 ELSE 0 END) AS readNum, " +
         "SUM(CASE WHEN \"commentOrNot\" is true THEN 1 ELSE 0 END) as commentnum, " +

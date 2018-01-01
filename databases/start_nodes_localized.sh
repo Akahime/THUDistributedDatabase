@@ -25,7 +25,7 @@ cockroach start --insecure \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259 &
 
-echo 'num_replicas: 3' | cockroach zone set .default --insecure -f -
+echo 'num_replicas: 6' | cockroach zone set .default --insecure -f -
 
 cockroach init \
 --insecure \
