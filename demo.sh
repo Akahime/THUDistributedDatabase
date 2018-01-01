@@ -1,13 +1,8 @@
 #/bin/bash
 
 echo "Starting demonstration of Distributed Databases course !"
+cd ./databases
 
-read -p "Press enter to launch the website."
-
-echo "npm start" 
-cd ddbwebsite/ ; npm start
-
-cd ..
 cockroach start --insecure \
 --locality=datacenter=hk-1 \
 --store=THUddb-1 \
@@ -46,3 +41,9 @@ cockroach init \
 --insecure \
 --host=localhost \
 --port=26257
+
+read -p "Press enter to launch the website."
+
+echo "npm start" 
+cd ../ddbwebsite/ ; npm start &
+
