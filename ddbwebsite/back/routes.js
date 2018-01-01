@@ -170,7 +170,7 @@ module.exports = function(app) {
 
 
     // Insert ========
-    app.get('/be-reads/insert', function(req, res, next) {
+    app.post('/be-reads/insert', function(req, res, next) {
         be_reads.insertBeReads(req, res, next);
     });
 

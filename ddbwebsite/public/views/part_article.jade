@@ -11,5 +11,37 @@
                 br
                 p.article-abstract=article.abstract
             .card-action
-                .chip=article.articleTags
-                a.pull-right(href=article.text) #{lang.__('read_full')}
+                .row.no-margin
+                    .col.s2
+                        .chip=article.articleTags
+                    .col.s1
+                        i.fa.fa-eye
+                        if article.readnum
+                            span &nbsp; #{article.readnum}
+                        else
+                            span &nbsp; 0
+                    .col.s1
+                        i.fa.fa-comments-o
+                        if article.commentnum
+                            span &nbsp; #{article.commentnum}
+                        else
+                            span &nbsp; 0
+                    .col.s1
+                        i.fa.fa-thumbs-up
+                        if article.agreenum
+                            span &nbsp; #{article.agreenum}
+                        else
+                            span &nbsp; 0
+                    .col.s1
+                        i.fa.fa-share-alt
+                        if article.sharenum
+                            span &nbsp; #{article.sharenum}
+                        else
+                            span &nbsp; 0
+                    .col.s2
+                        if article.video
+                            a.pull-right(href=article.video)
+                                i.fa.fa-video-camera
+                                span &nbsp; VIDEO
+                    .col.s4
+                        a.pull-right(href=article.text) #{lang.__('read_full')}

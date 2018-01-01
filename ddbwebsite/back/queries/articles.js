@@ -27,11 +27,13 @@ exports.getAllArticles= function (req, res) {
         order = "id";
     }
 
+    const sqlstr= 'SELECT article.*, be_read.readnum, be_read.commentnum, be_read.agreenum, be_read.sharenum FROM article LEFT JOIN be_read ON article.id=be_read.aid ';
+
     if (category !== "science" && category !== "technology") {
-        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' ORDER BY '+order+' DESC LIMIT 50');
+        return db.any(sqlstr+'WHERE language=\''+req.getLocale()+'\' ORDER BY '+order+' DESC LIMIT 50');
     }
     else {
-        return db.any('SELECT * FROM article WHERE language=\''+req.getLocale()+'\' AND category=\''+category+'\' ORDER BY '+order+' DESC LIMIT 50');
+        return db.any(sqlstr+'WHERE language=\''+req.getLocale()+'\' AND category=\''+category+'\' ORDER BY '+order+' DESC LIMIT 50');
     }
 };
 
@@ -79,7 +81,7 @@ function gen_an_article(i) {
     article["video"] = "";
     //We don't have videos all the time
     if(Math.random()>0.8) {
-        article["video"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+1)+".html" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+2)+".html";
+        article["video"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+1)+".html" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+2)+".mp4";
     }
 
     return "(" + article["aid"] + ", " +

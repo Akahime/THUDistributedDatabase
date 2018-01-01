@@ -63,3 +63,10 @@ block content
                                 input(type="number" name="endaid")
                                 label Articles to id
                         input.btn(type="submit" value="Submit")
+
+        .row.col.s12
+            .card-panel
+                h3.text-cursive Be-Reads
+                .row
+                    form.col.s12(action="/be-reads/insert" method="post")
+                        input.btn(type="submit" value="Generate")
