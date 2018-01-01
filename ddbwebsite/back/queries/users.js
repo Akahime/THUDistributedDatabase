@@ -29,7 +29,7 @@ exports.insertUsers = function (req, res){
         str +=  gen_an_user(i) + ", "
     }
     str +=  gen_an_user(end-1) + ";";
-    console.log(str);
+    console.log("Inserting "+req.body.number+" values");
 
     db.none('INSERT INTO "user" VALUES '+str)
         .then(function () {

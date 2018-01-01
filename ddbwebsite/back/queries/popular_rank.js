@@ -18,40 +18,79 @@ var pgp = require('pg-promise')(options);
 var db = pgp(config.dbConfig);
 
 
+const sqlstr= 'SELECT article.*, be_read.readnum, be_read.commentnum, be_read.agreenum, be_read.sharenum FROM article LEFT JOIN be_read ON article.id=be_read.aid ';
 
 exports.getPopularDaily = function (req, res) {
-    return db.any('SELECT * FROM article ' +
-        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Daily\')');
+    return db.any(sqlstr+'WHERE article.id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Daily\')');
 };
 
 exports.getPopularMonthly = function (req, res) {
-    return db.any('SELECT * FROM article ' +
-        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Monthly\')');
+    return db.any(sqlstr+'WHERE article.id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Monthly\')');
 };
 
 exports.getPopularWeekly = function (req, res) {
-    return db.any('SELECT * FROM article ' +
-        'WHERE id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Weekly\')');
+    return db.any(sqlstr+'WHERE article.id = any(SELECT articleaidlist FROM popular_rank WHERE temporalgranularity = \'Weekly\')');
 };
 
-exports.insertPopular = function (req, res, next){
-    const insertStr = "INSERT INTO popular_rank(timestamp, temporalgranularity, articleaidlist) VALUES ";
-    ([["Daily",'readnumdaily'],["Weekly",'readnumweekly'],["Monthly",'readnummonthly']]).forEach(function(granularity){
-        db.any("SELECT aid FROM be_read ORDER BY " + granularity[1] + " DESC LIMIT 5;")
-            .then(function (data) {
-                const liste = utils.list_from_data(data, 'aid');
+exports.updatePopular = function (req, res, next){
+    //Daily
+    var oneDayAgo = new Date();
+    oneDayAgo.setHours(0);
+    console.log(oneDayAgo);
 
-                console.log(insertStr+"(CURRENT_TIMESTAMP(), '"+granularity[0]+"', ARRAY[" + liste + "])");
-                db.none(insertStr+"(CURRENT_TIMESTAMP(), '"+granularity[0]+"', ARRAY[" + liste + "])")
-                    .then(function () {
-                        res.redirect('/');
-                    })
-                    .catch(function (err) {
-                        return next(err);
-                    });
-            })
-            .catch(function (err) {
-                return next(err);
-            });
-    })
+    db.any('SELECT aid FROM read WHERE timestamp > \''+oneDayAgo.toISOString()+'\' GROUP BY aid ORDER BY count(aid) DESC LIMIT 5')
+        .then(function(daily){
+            const listDaily = utils.list_from_data(daily, 'aid');
+            console.log(listDaily);
+            db.none('UPSERT INTO popular_rank values (1,CURRENT_TIMESTAMP(),\'Daily\',ARRAY['+listDaily+']);')
+                .then(function(){
+
+                    var oneWeekAgo = new Date();
+                    oneWeekAgo.setDate(oneWeekAgo.getDate()-7);
+                    console.log(oneWeekAgo);
+
+                    db.any('SELECT aid FROM read WHERE timestamp > \''+oneWeekAgo.toISOString()+'\' GROUP BY aid ORDER BY count(aid) DESC LIMIT 5')
+                        .then(function(weekly){
+                            const listWeekly= utils.list_from_data(weekly, 'aid');
+                            console.log(listWeekly);
+                            db.none('UPSERT INTO popular_rank values (2,CURRENT_TIMESTAMP(),\'Weekly\',ARRAY['+listWeekly+']);')
+                                .then(function(){
+
+                                    var oneMonthAgo = new Date();
+                                    oneMonthAgo.setMonth(oneMonthAgo.getMonth()-1);
+                                    console.log(oneMonthAgo);
+
+                                    db.any('SELECT aid FROM read WHERE timestamp > \''+oneMonthAgo.toISOString()+'\' GROUP BY aid ORDER BY count(aid) DESC LIMIT 5')
+                                        .then(function(monthly){
+                                            const listMonthly= utils.list_from_data(monthly, 'aid');
+                                            console.log(listMonthly);
+                                            db.none('UPSERT INTO popular_rank values (3,CURRENT_TIMESTAMP(),\'Monthly\',ARRAY['+listMonthly+']);')
+                                                .then(function(){
+                                                    req.flash('message', "Updated Popular_rank !");
+                                                    res.redirect("/bulk-load");
+                                                })
+                                                .catch(function (err) {
+                                                    return next(err);
+                                                });
+                                        })
+                                        .catch(function (err) {
+                                            return next(err);
+                                        });
+
+                                })
+                                .catch(function (err) {
+                                    return next(err);
+                                });
+                        })
+                        .catch(function (err) {
+                            return next(err);
+                        });
+                })
+                .catch(function (err) {
+                    return next(err);
+                });
+        })
+        .catch(function (err) {
+            return next(err);
+        });
 };

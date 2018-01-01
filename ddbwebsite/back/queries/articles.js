@@ -46,7 +46,7 @@ exports.insertArticles = function (req, res){
         str +=  gen_an_article(i) + ", "
     }
     str +=  gen_an_article(end-1) + ";";
-    console.log(str);
+    console.log("Inserting "+req.body.number+" values");
 
     db.none('INSERT INTO article VALUES '+str)
         .then(function () {

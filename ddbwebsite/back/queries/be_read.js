@@ -31,7 +31,7 @@ exports.insertBeReads = function (req, res, next){
         "SUM(CASE WHEN \"agreeOrNot\" is true THEN 1 ELSE 0 END) AS agreeNum, " +
         "SUM(CASE WHEN \"shareOrNot\" is true THEN 1 ELSE 0 END) as sharenum FROM read GROUP BY aid;")
         .then(function (result) {
-            var rowsProcessed = 0;
+            var rowsProcessed = 1;
             async.forEach(result, (row) => {
                 db.any("SELECT uid FROM read WHERE \"readOrNot\" IS TRUE AND aid = " + row['aid'] + " GROUP BY uid;")
                     .then(function (data1) {
@@ -56,10 +56,10 @@ exports.insertBeReads = function (req, res, next){
                                                      rowsProcessed ++;
                                                      console.log("SUCCESS for row number "+rowsProcessed+"("+row['aid']+", "+row['readnum']+ ",ARRAY[" + list1 + "]," + row['readnum']
                                                          + ",ARRAY[" + list2 + "]," + row['commentnum'] + ",ARRAY[" + list3 + "],"+ row['sharenum'] + ",ARRAY[" + list4 + "])");
-                                                     if(rowsProcessed == result.length) {
-                                                         req.flash('message', "Success inserting "+rowsProcessed+" be_reads");
-                                                         res.redirect("/bulk-load");
-                                                     }
+
+                                                     req.flash('message', "Success inserting be_reads");
+                                                     res.redirect("/bulk-load");
+
                                                  })
                                                  .catch(function (err) {
                                                  return next(err);

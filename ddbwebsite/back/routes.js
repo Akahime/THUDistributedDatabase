@@ -81,8 +81,8 @@ module.exports = function(app) {
     });
 
     // Insert ========
-    app.get('/popular-rank/insert', function(req, res, next) {
-        popular_rank.insertPopular(req, res, next);
+    app.post('/popular-rank/insert', function(req, res, next) {
+        popular_rank.updatePopular(req, res, next);
     });
 
 

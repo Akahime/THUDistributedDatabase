@@ -37,7 +37,7 @@ exports.insertReads = function (req, res){
         str +=  gen_an_read(i, startuid, enduid, startaid, endaid) + ", "
     }
     str +=  gen_an_read(end-1, startuid, enduid, startaid, endaid) + ";";
-    console.log(str);
+    console.log("Inserting "+req.body.number+" values");
 
     db.none('INSERT INTO read VALUES '+str)
         .then(function () {
