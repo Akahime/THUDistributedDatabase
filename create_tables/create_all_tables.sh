@@ -1,5 +1,6 @@
 #!/bin/bash
 
+echo "CREATE DATABASE thudb; " | cockroach sql --insecure
 for file in {"user","article","read","be_read","popular_rank"}
 	do echo -e "\n\nCreating table $file \n\n", $(cockroach sql --insecure --database=thudb < ./$file.sql)
 done

@@ -1,9 +1,10 @@
 #/bin/bash
 
 cockroach gen haproxy \
-	# --insecure \
-	# --host=localhost \
-	# --port=26257
+	 --insecure \
+	 --host=localhost \
+	 --port=26257
+	 
 echo "Generated haproxy.cfg : please modify the port now."
 
 read -p "Press enter to launch the Load Balancer"

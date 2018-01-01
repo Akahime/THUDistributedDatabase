@@ -1,5 +1,5 @@
 #/bin/bash
-
+# ./2-remove_node_tempo.sh "SELECT id from thudb.\"user\" ORDER BY id DESC LIMIT 5;"
 cd databases
 
 echo ">>>> First, we gonna do a SQL query : $1 on a specific port 25258"
