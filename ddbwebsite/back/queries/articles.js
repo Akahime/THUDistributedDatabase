@@ -40,10 +40,10 @@ exports.insertArticles = function (req, res){
     const start = req.body.startid;
     const end = parseInt(req.body.startid)+parseInt(req.body.number);
 
-    for(var i=start;i<end;i++) {
+    for(var i=start;i<end-1;i++) {
         str +=  gen_an_article(i) + ", "
     }
-    str +=  gen_an_article(end) + ";";
+    str +=  gen_an_article(end-1) + ";";
     console.log(str);
 
     db.none('INSERT INTO article VALUES '+str)

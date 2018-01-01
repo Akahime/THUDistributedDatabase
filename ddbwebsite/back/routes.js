@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var config = require('./config/config');
 var fs = require('fs');
+
 var users = require('./queries/users');
 var articles = require('./queries/articles');
 var reads = require('./queries/reads');

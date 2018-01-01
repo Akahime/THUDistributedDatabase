@@ -33,10 +33,10 @@ exports.insertReads = function (req, res){
     const startaid = parseInt(req.body.startaid);
     const endaid = parseInt(req.body.endaid);
 
-    for(var i=start;i<end;i++) {
+    for(var i=start;i<end-1;i++) {
         str +=  gen_an_read(i, startuid, enduid, startaid, endaid) + ", "
     }
-    str +=  gen_an_read(end, startuid, enduid, startaid, endaid) + ";";
+    str +=  gen_an_read(end-1, startuid, enduid, startaid, endaid) + ";";
     console.log(str);
 
     db.none('INSERT INTO read VALUES '+str)
