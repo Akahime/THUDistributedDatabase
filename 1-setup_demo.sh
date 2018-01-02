@@ -3,7 +3,20 @@
 echo "Starting demonstration of Distributed Databases course !"
 cd ./databases/
 
-read -p ">>>>  Press enter to launch Cockroach and 7 nodes"
+read -p ">>>>  Press enter to launch Cockroach and 7 nodes. Then, press enter again to add another one."
+
+echo "cockroach start \
+--insecure \
+--locality=datacenter=hk-1 \
+--store=THUddb-1 \
+--cache=100MB  \
+--host=localhost \
+--port=26257 \
+--join=localhost:26257,localhost:26258,localhost:26259 &"
+
+echo "cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-5 --host=localhost --port=26260 --http-port=8083 \
+	--cache=100MB --join=localhost:26257,localhost:26258,localhost:26259 &
+"
 
 cockroach start \
 --insecure \
