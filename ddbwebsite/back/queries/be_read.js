@@ -23,6 +23,37 @@ exports.getAllBeReads= function (req, res, next) {
     return db.any('select * from be_read');
 };
 
+
+exports.insertBeReadsPartial = function (req, res, next){
+    db.any("SELECT aid, COUNT(aid), SUM(CASE WHEN \"readOrNot\" is true THEN 1 ELSE 0 END) AS readNum, " +
+        "SUM(CASE WHEN \"commentOrNot\" is true THEN 1 ELSE 0 END) as commentnum, " +
+        "SUM(CASE WHEN \"agreeOrNot\" is true THEN 1 ELSE 0 END) AS agreeNum, " +
+        "SUM(CASE WHEN \"shareOrNot\" is true THEN 1 ELSE 0 END) as sharenum FROM read GROUP BY aid;")
+        .then(function (result) {
+            var str="";
+            result.forEach(function(row){
+                str+="(CURRENT_TIMESTAMP(),"+ row['aid']+", "+row['readnum']+",ARRAY[]," + row['readnum']
+                + ",ARRAY[]," + row['commentnum'] + ",ARRAY[],"+ row['sharenum'] + ",ARRAY[]), ";
+            });
+            str = str.substring(0, str.length-2)+";";
+            console.log("Insert be-reads from bulk-load");
+            db.none("INSERT INTO be_read"+be_read_columns+" VALUES "+str)
+                .then(function () {
+                    req.flash('message', "Success inserting be_reads");
+                    res.redirect("/bulk-load");
+
+                })
+                .catch(function (err) {
+                    return next(err);
+                });
+
+        })
+        .catch(function (err) {
+            return next(err);
+        });
+};
+
+
 exports.insertBeReads = function (req, res, next){
 	console.log("start be reads");
 

@@ -171,7 +171,7 @@ module.exports = function(app) {
 
     // Insert ========
     app.post('/be-reads/insert', function(req, res, next) {
-        be_reads.insertBeReads(req, res, next);
+        be_reads.insertBeReadsPartial(req, res, next);
     });
 
     //======= BULK LOAD =====

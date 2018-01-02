@@ -67,6 +67,9 @@ em {
 .article-abstract {
   margin-top: 20px !important; }
 
+.card-title {
+  text-shadow: grey 2px 2px 1px; }
+
 .card-image {
   height: 200px;
   overflow: hidden;
