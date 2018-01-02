@@ -3,7 +3,7 @@
 echo "Starting demonstration of Distributed Databases course !"
 cd ./databases/
 
-read -p ">>>>  Press enter to launch Cockroach and 8 nodes"
+read -p ">>>>  Press enter to launch Cockroach and 7 nodes"
 
 cockroach start \
 --insecure \
@@ -41,7 +41,6 @@ cockroach start --insecure \
 --cache=100MB \
 --join=localhost:26257,localhost:26258,localhost:26259 &
 
-read -p "Press enter to init the cluster"
 
 cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-5 --host=localhost --port=26260 --http-port=8083 \
 				--cache=100MB --join=localhost:26257,localhost:26258,localhost:26259 &
@@ -52,6 +51,11 @@ cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-6 --host=lo
 cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-7 --host=localhost --port=25262 --http-port=8085 \
 				--cache=100MB --join=localhost:26257,localhost:26258,localhost:26259 &
 
+				
+read -p "Press enter to add another node"
+
+echo "cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-8 --host=localhost --port=0 --http-port=0 \
+				--cache=100MB --join=localhost:26257,localhost:26258,localhost:26259 &"
 cockroach start --insecure --locality=datacenter=bj-1 --store=THUddb-8 --host=localhost --port=0 --http-port=0 \
 				--cache=100MB --join=localhost:26257,localhost:26258,localhost:26259 &
 

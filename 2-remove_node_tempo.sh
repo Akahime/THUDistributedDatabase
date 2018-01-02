@@ -1,18 +1,25 @@
 #/bin/bash
-# ./2-remove_node_tempo.sh "SELECT id from thudb.\"user\" ORDER BY id DESC LIMIT 5;"
+
+if [  $# -eq 0  ]
+  then
+    line='SELECT id from thudb."user" ORDER BY id DESC LIMIT 5;'
+else
+	line="$1"
+fi
+
 cd databases
 
-echo ">>>> First, we gonna do a SQL query : $1 on a specific port 25258"
+echo ">>>> First, we gonna do a SQL query : $line on a specific port 25258"
 echo
 read -p "Press enter to make the query"
-echo "echo $1 | cockroach sql --insecure --port=25258"
+echo "echo $line | cockroach sql --insecure --port=25258"
 echo "=========================="
-echo $1 | cockroach sql --insecure --port=25258
+echo $line| cockroach sql --insecure --port=25258
 echo "=========================="
 
 echo
 read -p "Press enter to stop a node on port 25258"
-echo "cockroach quit --insecure --port=26258"
+echo "cockroach quit --insecure --port=25258"
 cockroach quit --insecure --port=25258
 
 echo
@@ -20,8 +27,8 @@ echo "We gonna do the query on the same node, we prove that it is down"
 read -p "Press enter to make the query"
 echo "=========================="
 
-echo "echo $1 | cockroach sql --insecure --port=25258"
-echo $1 | cockroach sql --insecure --port=25258
+echo "echo $line| cockroach sql --insecure --port=25258"
+echo $line| cockroach sql --insecure --port=25258
 echo "=========================="
 
 echo
@@ -50,8 +57,8 @@ echo ">>>> What happened to the node?"
 read -p "Press enter to make the query"
 
 echo "=========================="
-echo "echo $1 | cockroach sql --insecure --port=25258"
-echo $1 | cockroach sql --insecure --port=25258
+echo "echo $line| cockroach sql --insecure --port=25258"
+echo $line | cockroach sql --insecure --port=25258
 echo "=========================="
 
 cd ..
