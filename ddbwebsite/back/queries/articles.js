@@ -76,12 +76,12 @@ function gen_an_article(i) {
     article["articleTags"] = "tags"+Math.floor(Math.random() * 50);
     article["authors"] = lang > 0.5 ? "English Author " + Math.floor(Math.random() * 2000) : "中国作家" + Math.floor(Math.random() * 2000);
     article["language"] = lang > 0.5 ?  "en":"zh";
-    article["text"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/texts/"+Math.floor(Math.random() * 5+5)+".html" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/texts/"+Math.floor(Math.random() * 5 +1)+".html";
+    article["text"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/texts/"+Math.floor(Math.random() * 5+6)+".html" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/texts/"+Math.floor(Math.random() * 5 +1)+".html";
     article["image"] = "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/pictures/"+Math.floor(Math.random() * 99+1)+".jpg" ;
     article["video"] = "";
     //We don't have videos all the time
     if(Math.random()>0.8) {
-        article["video"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+1)+".html" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+2)+".mp4";
+        article["video"] = lang > 0.5 ? "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+1)+".mp4" : "https://s3.ap-northeast-2.amazonaws.com/dfs-edai/videos/"+Math.floor(Math.random() * 2+2)+".mp4";
     }
 
     return "(" + article["aid"] + ", " +
