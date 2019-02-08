@@ -37,7 +37,7 @@ The database configuration can be found in ddbwebsite/back/config/config.json
 ### Execute SQL file without copy-pasting in the interface ###
 ```cockroach sql --insecure --database=thudb < create_tables/articles.sql```
 
-##1.4 Demonstration of Server Management
+## 1.4 Demonstration of Server Management
 
 These scripts are created by Valentin. They give series of instructions and explain each step of the demonstration, 
 so you need to *pay attention at the console* you are launching these scripts with and follow the written instructions.
@@ -50,15 +50,15 @@ Then run ```./3-loadbalancing_migration```
 
 
 
-#2. Website (\ddbwebsite folder) #
+# 2. Website (\ddbwebsite folder)
 
-##2.1 Packages required
+## 2.1 Packages required
 
 - node v4.x (see NodeJS website)
 - npm 2.x (with NodeJS)
 - forever (npm package): run a node web server in background
 
-##2.2 Usage
+## 2.2 Usage
 
 Build:
 1. (sudo) ```npm install``` to install packages dependancies
@@ -71,7 +71,7 @@ Build:
 6. ```forever stop ddbwebsite``` to stop the server
 
 
-##2.3 Backend Organization (\back folder)
+## 2.3 Backend Organization (\back folder)
 
 - config : config files for general working of the website (db, translations, utils ..)
 - locales : translation files
